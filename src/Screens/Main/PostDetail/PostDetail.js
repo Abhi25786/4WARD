@@ -20,7 +20,7 @@ export default function PostDetail({route, navigation}) {
   console.log(allData, 'z');
   return (
     <WrapperContainer>
-        {/*----------------------------- this is user post image & info  --------------------------------- */}
+      {/*----------------------------- this is user post image & info  --------------------------------- */}
 
       <ImageBackground
         source={allData?.uri}
@@ -35,7 +35,7 @@ export default function PostDetail({route, navigation}) {
               <TextComponent name="Chandigarh" styling={styles.textStyle} />
             </View>
             <View style={styles?.crossStyle}>
-                {/*----------------------------- this is back button  --------------------------------- */}
+              {/*----------------------------- this is back button  --------------------------------- */}
 
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Image source={imagePath?.cross} style={styles.dotsMenu} />
@@ -43,8 +43,12 @@ export default function PostDetail({route, navigation}) {
             </View>
           </View>
         </View>
-{/*----------------------------- this button is use for view map --------------------------------- */}
-        <Buttoncustam stylbtn={styles?.buttonStyle} title={en?.VIEW_MAP} />
+        {/*----------------------------- this button is use for view map --------------------------------- */}
+        <Buttoncustam
+          stylbtn={styles?.buttonStyle}
+          title={en?.VIEW_MAP}
+          onpress={null}
+        />
       </ImageBackground>
     </WrapperContainer>
   );

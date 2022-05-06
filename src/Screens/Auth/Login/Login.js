@@ -41,16 +41,16 @@ function Login({navigation}) {
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('error raise', error);
-        showError(error);
+        // showError(error);
       } else if (error.code === statusCodes.IN_PROGRESS) {
         console.log('error raise', error);
-        showError(error);
+        // showError(error);
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         console.log('error raise', error);
-        showError(error);
+        // showError(error);
       } else {
         console.log('error raise', error);
-        showError(error);
+        // showError(error);
       }
     }
   };

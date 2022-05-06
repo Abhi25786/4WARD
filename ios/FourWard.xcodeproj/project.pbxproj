@@ -12,8 +12,8 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		869C0C482AFFEA3F0EFB8468 /* libPods-FourWard-FourWardTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C39290C308D5BF7286E7EF1F /* libPods-FourWard-FourWardTests.a */; };
+		EC4C145228254B2B0005467B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC4C145128254B2B0005467B /* Launch Screen.storyboard */; };
 		ECCDD8D2281BFB7200662B3E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = ECCDD8D1281BFB7200662B3E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -40,9 +40,9 @@
 		1D90800970B97B499DF5A879 /* Pods-FourWard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FourWard.release.xcconfig"; path = "Target Support Files/Pods-FourWard/Pods-FourWard.release.xcconfig"; sourceTree = "<group>"; };
 		30BAC67E5413496E4DA7F91B /* Pods-FourWard-FourWardTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FourWard-FourWardTests.debug.xcconfig"; path = "Target Support Files/Pods-FourWard-FourWardTests/Pods-FourWard-FourWardTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4485639C3C52F1215BDB9E7E /* Pods-FourWard-FourWardTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FourWard-FourWardTests.release.xcconfig"; path = "Target Support Files/Pods-FourWard-FourWardTests/Pods-FourWard-FourWardTests.release.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = FourWard/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C39290C308D5BF7286E7EF1F /* libPods-FourWard-FourWardTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FourWard-FourWardTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C50D07468CA11C3D4FDA6F73 /* libPods-FourWard.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FourWard.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC4C145128254B2B0005467B /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "FourWard/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		ECCDD8D1281BFB7200662B3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FD4644BD1A0879218062BA41 /* Pods-FourWard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FourWard.debug.xcconfig"; path = "Target Support Files/Pods-FourWard/Pods-FourWard.debug.xcconfig"; sourceTree = "<group>"; };
@@ -93,8 +93,8 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				EC4C145128254B2B0005467B /* Launch Screen.storyboard */,
 			);
 			name = FourWard;
 			sourceTree = "<group>";
@@ -244,7 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				EC4C145228254B2B0005467B /* Launch Screen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				ECCDD8D2281BFB7200662B3E /* GoogleService-Info.plist in Resources */,
 			);
