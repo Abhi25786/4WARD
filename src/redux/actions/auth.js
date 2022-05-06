@@ -1,5 +1,5 @@
 import { set } from 'lodash';
-import { EDIT_PROFILE, LOGIN, SIGNUP } from '../../config/urls';
+import { EDIT_PROFILE, FORGET_PASSWORD, LOGIN, SIGNUP } from '../../config/urls';
 import { apiPost, setItem, setUserData } from '../../utils/utils';
 import store from '../store';
 import types from '../types';
@@ -64,4 +64,7 @@ export const editProfile = (data, header = {}) => {
       });
   });
 };
-
+export const forgotPassword =(data)=>{
+  console.log(data,"apid");
+  return apiPost(FORGET_PASSWORD,data)
+  }

@@ -31,14 +31,14 @@ function AuthStack(Stack) {
       
       />
       <Stack.Screen
-        name={navigationStrings.SET_PASSWORD}
-        component={SetPassword}
+        name={navigationStrings.FORGET_PASSWORD}
+        component={ForgetPassword}
         options={{headerShown: false}}
       
       />
       <Stack.Screen
-        name={navigationStrings.FORGET_PASSWORD}
-        component={ForgetPassword}
+        name={navigationStrings.SET_PASSWORD}
+        component={SetPassword}
         options={{headerShown: false}}
       
       />

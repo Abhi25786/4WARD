@@ -8,6 +8,7 @@ import TextComponent from '../../../Components/TextComponent';
 import WrapperContainer from '../../../Components/WrapperContainer';
 import imagePath from '../../../constants/imagePath';
 import en from '../../../constants/lang/en';
+import navigationStrings from '../../../navigation/navigationStrings';
 import actions from '../../../redux/actions';
 import colors from '../../../styles/colors';
 import { commonStyles } from '../../../styles/styles';
@@ -27,8 +28,8 @@ function Otp({navigation, route}) {
   const otpValidation = () => {
     if (otp == code) {
       
-      actions.saveUserData(allData);
-      showSuccess('Login successfully');
+  navigation.navigate(navigationStrings?.SET_PASSWORD,{data:allData})
+      // showSuccess('Login successfully');
     } else {
       showError('otp is wrong');
     }

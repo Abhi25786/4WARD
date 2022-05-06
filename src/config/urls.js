@@ -9,7 +9,7 @@ export const CHANGE_PASSWORD = getApiUrl("/change_password");
 export const LOGIN = getApiUrl("/userlogin");
 export const USER_LOGIN = getApiUrl("/verify_otp");
 export const EDIT_PROFILE = getApiUrl("/edit_profile");
-export const FORGET_PASSWORD = getApiUrl("/forgot_password");
+export const FORGET_PASSWORD = getApiUrl('/forgot_password');
 
 
 

@@ -29,7 +29,7 @@ export async function apiReq(
 	requestOptions = {}
 ) {
 console.log("api hit",endPoint)
-console.log("data",data)
+console.log(">api>>>>>>",data)
 	return new Promise(async (res, rej) => {
 		const getTokenHeader = await getHeaders();
 		headers = {
@@ -89,6 +89,7 @@ console.log("data",data)
 }
 
 export function apiPost(endPoint, data, headers = {}) {
+	console.log(data,"@@@@");
 	return apiReq(endPoint, data, 'post', headers);
 }
 
