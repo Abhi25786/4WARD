@@ -25,17 +25,18 @@ function AuthStack(Stack) {
       
       />
        <Stack.Screen
-        name={navigationStrings.OTP}
-        component={Otp}
-        options={{headerShown: false}}
-      
-      />
-      <Stack.Screen
         name={navigationStrings.FORGET_PASSWORD}
         component={ForgetPassword}
         options={{headerShown: false}}
       
       />
+       <Stack.Screen
+        name={navigationStrings.OTP}
+        component={Otp}
+        options={{headerShown: false}}
+      
+      />
+     
       <Stack.Screen
         name={navigationStrings.SET_PASSWORD}
         component={SetPassword}
