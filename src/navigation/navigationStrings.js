@@ -15,5 +15,6 @@ export default {
   EDIT_PROFILE:"Edit Profile",
   POST_DETAIL:'Post Detail',
   OTP_LOGIN:'Login With Otp',
-  FORGET_PASSWORD:"Forget Password"
+  FORGET_PASSWORD:"Forget Password",
+  ADD_INFO:"Add Information"
 };

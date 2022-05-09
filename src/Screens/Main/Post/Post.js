@@ -1,18 +1,22 @@
 import CameraRoll from '@react-native-community/cameraroll';
-
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  PermissionsAndroid,
-  Platform,
-  Image,
-  FlatList,
-  ScrollView,
+  FlatList, Image, PermissionsAndroid,
+  Platform, TouchableOpacity
 } from 'react-native';
+import ImagePicker from 'react-native-image-crop-picker';
 import HeadComponent from '../../../Components/HeadComponent';
 import WrapperContainer from '../../../Components/WrapperContainer';
-import {moderateScale, moderateScaleVertical, width} from '../../../styles/responsiveSize';
+import imagePath from '../../../constants/imagePath';
+import navigationStrings from '../../../navigation/navigationStrings';
+import {
+  moderateScaleVertical,
+  width
+} from '../../../styles/responsiveSize';
 import { styles } from './style';
-function Post() {
+
+
+function Post({navigation}) {
   const [state, setState] = useState({
     currentPageInfo: '',
     photos: '',
@@ -49,19 +53,39 @@ function Post() {
     imagesData();
   }, []);
   console.log(state, '>>>>aaa');
+
+  const editProfileData = async () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+
+      console.log(image);
+
+    });
+  };
+  const onImageClick = async (data) => {
+  navigation.navigate(navigationStrings?.ADD_INFO,{data :data})
+  };
   return (
     <WrapperContainer>
-      <HeadComponent leftTexticon={true} lefttitle={"Select photos"} lefttextStyle={styles.headerText}/>
+      <HeadComponent
+        leftTexticon={true}
+        lefttitle={'Select photos'}
+        lefttextStyle={styles.headerText}
+      />
+
       <FlatList
         data={state.photos}
-        
         numColumns={3}
         contentContainerStyle={{
-          paddingBottom:moderateScaleVertical(80)
+          paddingBottom: moderateScaleVertical(80),
         }}
         renderItem={(elem, i) => {
           return (
             <>
+            <TouchableOpacity onPress={()=>onImageClick(elem)}>
               <Image
                 key={i}
                 style={{
@@ -70,11 +94,14 @@ function Post() {
                 }}
                 source={{uri: elem.item.node.image.uri}}
               />
+            </TouchableOpacity>
             </>
           );
         }}
       />
-     
+      <TouchableOpacity activeOpacity={0.8} onPress={editProfileData}>
+        <Image source={imagePath?.camera} style={styles?.cameraButton} />
+      </TouchableOpacity>
     </WrapperContainer>
   );
 }

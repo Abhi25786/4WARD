@@ -2,7 +2,8 @@ import React from 'react';
 import navigationStrings from './navigationStrings';
 import { createStackNavigator } from '@react-navigation/stack'
 import Bottomnavigation from './Bottomnavigation';
-import { ChangePassword, EditProfile, PostDetail } from '../Screens/Main';
+import { AddInfo, ChangePassword, EditProfile, PostDetail } from '../Screens/Main';
+
 function HomeStack() {
   const Stack = createStackNavigator()
   return (
@@ -22,6 +23,10 @@ function HomeStack() {
      <Stack.Screen 
     name={navigationStrings.POST_DETAIL}
     component={PostDetail}
+    />
+      <Stack.Screen 
+    name={navigationStrings.ADD_INFO}
+    component={AddInfo}
     />
   </Stack.Navigator>
   );

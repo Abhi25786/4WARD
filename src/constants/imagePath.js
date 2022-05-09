@@ -29,4 +29,6 @@ export default {
 
   edit: require('../assets/images/ic_edit.png'),
   cross: require('../assets/images/ic_cross.png'),
+  camera: require('../assets/images/camera.png'),
+ plus : require('../assets/images/ic_plus.png'),
 };

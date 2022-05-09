@@ -43,4 +43,5 @@ export const commonStyles = StyleSheet.create({
     height: moderateScale(height - height / 1.05),
     width: moderateScale(width - width / 1.05),
   },
+  
 });

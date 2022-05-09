@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Buttoncustam from '../../../Components/Button';
 import HeadComponent from '../../../Components/HeadComponent';
 import TextInputComponent from '../../../Components/TextInputComponent';
@@ -17,14 +17,12 @@ import en from '../../../constants/lang/en';
 import actions from '../../../redux/actions';
 import colors from '../../../styles/colors';
 import {
-  moderateScale,
-  moderateScaleVertical,
-  width,
+  moderateScale
 } from '../../../styles/responsiveSize';
-import {commonStyles} from '../../../styles/styles';
-import {showError} from '../../../utils/helperFunctions';
+import { commonStyles } from '../../../styles/styles';
+import { showError } from '../../../utils/helperFunctions';
 import validator from '../../../utils/validations';
-import {styles} from './style';
+import { styles } from './style';
 
 export default function EditProfile({navigation}) {
   //------------------------- userData  store------------------------//

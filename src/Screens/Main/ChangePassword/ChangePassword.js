@@ -24,7 +24,7 @@ function ChangePassword({navigation, routes}) {
   const [cshow, setcShow] = useState();
 
   
-  const {password, newPassword} = state;
+
   const showpass = () => {
     setShow(!show);
   };
@@ -37,6 +37,7 @@ function ChangePassword({navigation, routes}) {
     password: '',
     newPassword: '',
   });
+  const {password, newPassword} = state;
   const updateState = data => setState(state => ({...state, ...data}));
 
       //-------------------------  validation section ------------------------//

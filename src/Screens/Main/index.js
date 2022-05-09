@@ -8,3 +8,4 @@ export {default as EditProfile} from './EditProfile/EditProfile';
 export {default as Notification} from './Notification/Notification';
 export {default as ChangePassword} from '../Main/ChangePassword/ChangePassword';
 export {default as PostDetail} from '../Main/PostDetail/PostDetail';
+export {default as AddInfo} from '../Main/AddInfo/AddInfo';

@@ -49,6 +49,7 @@ export default {
     SAVE:"Save",
     SECTOR:'Sector',
     VIEW_MAP:'View Map',
-    SUBMIT:'Submit'
+    SUBMIT:'Submit',
+    ADD_INFO:"Add Info"
   
   };
