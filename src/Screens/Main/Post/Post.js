@@ -64,17 +64,25 @@ function Post({navigation}) {
   }, []);
   console.log(state, '>>>>aaa');
 
-  const editProfileData = async () => {
-    ImagePicker.openCamera({
+  // const editProfileData =  () => {
+  //   ImagePicker.openCamera({
+  //     width: 300,
+  //     height: 400,
+  //     cropping: true,
+  //   }).then(image => {
+  //     console.log(image.path);
+  //     // navigation.navigate(navigationStrings?.ADD_INFO, {imageData: image.path});
+  //   });
+  // };
+  const onCamera = () => {
+    ImagePicker.openCame({
       width: 300,
       height: 400,
       cropping: true,
-    }).then(image => {
-      console.log(image.path);
-      navigation.navigate(navigationStrings?.ADD_INFO, {imageData: image.path});
+    }).then(reslt => {
+      console.log(reslt);
     });
   };
-
   const onPost = () => {
     navigation.navigate(navigationStrings?.ADD_INFO,{data:imageSelect});
   };
@@ -121,7 +129,7 @@ function Post({navigation}) {
           );
         }}
       />
-      <TouchableOpacity  onPress={editProfileData}>
+      <TouchableOpacity  onPress={onCamera}>
         <Image source={imagePath?.camera} style={styles?.cameraButton} />
       </TouchableOpacity>
     </WrapperContainer>
