@@ -24,7 +24,11 @@ function Post({navigation}) {
   const [state, setState] = useState({
     currentPageInfo: '',
     photos: '',
+    imageSelect: '',
   });
+
+  const {currentPageInfo, photos, imageSelect} = state;
+  const updateState = data => setState(state => ({...state, ...data}));
   /********Check for android permission */
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -46,13 +50,10 @@ function Post({navigation}) {
       assetType: 'Photos',
     })
       .then(r => {
-        setState({photos: r.edges});
-        let value = [];
-        if (state.photos.length == 1) {
-          value = [...state.photos, ...r.edges];
-          setState({photos:r.edges[0]?.node.image.uri})
-        }
+        // setState({photos: r.edges});
+        updateState({photos: r.edges});
         console.log('images ', r);
+        updateState({imageSelect: r.edges[0].node.image.uri});
       })
       .catch(error => {
         console.log('cameraroll error ', error);
@@ -69,17 +70,18 @@ function Post({navigation}) {
       height: 400,
       cropping: true,
     }).then(image => {
-      console.log(image);
+      console.log(image.path);
+      navigation.navigate(navigationStrings?.ADD_INFO, {imageData: image.path});
     });
   };
-  const onImageClick = async data => {
-    navigation.navigate(navigationStrings?.ADD_INFO, {data: data});
-  };
 
-  const onPost = async  => {
-    navigation.navigate(navigationStrings?.ADD_INFO,);
+  const onPost = () => {
+    navigation.navigate(navigationStrings?.ADD_INFO,{data:imageSelect});
   };
-
+  const onImageClick = data => {
+    console.log(data, 'picdata');
+    updateState({imageSelect: data.item.node.image.uri});
+  };
   return (
     <WrapperContainer>
       <HeadComponent
@@ -87,18 +89,17 @@ function Post({navigation}) {
         lefttitle={'Select photos'}
         lefttextStyle={styles.headerText}
         rightTexticon={true}
-       righttitle={'Post'}
-       righttextStyle={styles.headerText}
-       rightPress={onPost}
-       
+        righttitle={'Post'}
+        righttextStyle={styles.headerText}
+        rightPress={onPost}
       />
       <Image
-        source={state?.photos}
-        style={{height: moderateScale(250), width: width}}
+        source={{uri: imageSelect}}
+        style={{height: moderateScale(300), width: width, resizeMode: 'cover'}}
       />
 
       <FlatList
-        data={state.photos}
+        data={photos}
         numColumns={3}
         contentContainerStyle={{
           paddingBottom: moderateScaleVertical(80),
@@ -120,7 +121,7 @@ function Post({navigation}) {
           );
         }}
       />
-      <TouchableOpacity activeOpacity={0.8} onPress={editProfileData}>
+      <TouchableOpacity  onPress={editProfileData}>
         <Image source={imagePath?.camera} style={styles?.cameraButton} />
       </TouchableOpacity>
     </WrapperContainer>

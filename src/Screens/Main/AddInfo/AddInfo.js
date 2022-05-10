@@ -32,7 +32,9 @@ export default function AddInfo({navigation, route}) {
 
   console.log(userImage, 'my image>>>>>>');
   const allData = route?.params?.data;
-  console.log(allData, 'mydatalist');
+  console.log(allData, 'uri image data');
+  const imageData = route?.params?.imageData;
+  console.log(imageData, 'mydatalist');
   const onGallery = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -40,6 +42,16 @@ export default function AddInfo({navigation, route}) {
       cropping: true,
     }).then(reslt => {
       updateState({userImage: userImage.concat(reslt.path)});
+    });
+  };
+  const onCamera = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(reslt => {
+      updateState({userImage: userImage.concat(reslt.path)});
+      console.log(reslt);
     });
   };
 
@@ -56,10 +68,10 @@ export default function AddInfo({navigation, route}) {
     Alert.alert('Choose', 'Image for uplode', [
       {
         text: 'Camera',
-        onPress: () => console.log('Cancel Pressed'),
+        onPress: onCamera,
         style: 'cancel',
       },
-      {text: 'Gallery', onPress: onGallery, style: styles?.alertStyle},
+      {text: 'Gallery', onPress: onGallery},
       {text: 'Cancle', onPress: () => console.log('OK Pressed')},
     ]);
   return (
@@ -79,15 +91,9 @@ export default function AddInfo({navigation, route}) {
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             <View>
               {allData ? (
-                <Image
-                  source={{uri: allData.item.node.image.uri}}
-                  style={styles?.imageStyle}
-                />
+                <Image source={{uri: allData}} style={styles?.imageStyle} />
               ) : (
-                <Image
-                  source={imagePath.into_Image}
-                  style={styles?.imageStyle}
-                />
+                <Image source={{uri: imageData}} style={styles?.imageStyle} />
               )}
             </View>
             {userImage.map((elem, i) => {
