@@ -29,7 +29,7 @@ const TextInputComponent = ({
   inputStyle = '',
   textcolour = '',
   inputViewstyle='',
-  multiline='',
+  multiline=false,
   ...props
 }) => {
   return (

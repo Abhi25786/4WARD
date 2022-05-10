@@ -25,7 +25,7 @@ function HeadComponent({
   rightimageIcon = '',
   rightimagestyle = '',
   righttextStyle = '',
-
+  rightPress='',
   viewstyle = '',
   ...props
 }) {
@@ -60,7 +60,7 @@ function HeadComponent({
           <Image source={rightimageIcon} style={rightimagestyle} />
         )}
         {rightTexticon && (
-          <TouchableOpacity activeOpacity={1} {...props}>
+          <TouchableOpacity activeOpacity={1} {...props} onPress={rightPress}>
             <Text style={righttextStyle}>{righttitle}</Text>
           </TouchableOpacity>
         )}

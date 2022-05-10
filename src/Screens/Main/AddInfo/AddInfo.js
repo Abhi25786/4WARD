@@ -1,45 +1,67 @@
+import React, {useState} from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
+  Alert,
   Image,
-  Platform,
   KeyboardAvoidingView,
-  TouchableOpacity
+  Platform,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import React from 'react';
-
-import WrapperContainer from '../../../Components/WrapperContainer';
+import {ScrollView} from 'react-native-gesture-handler';
+import ImagePicker from 'react-native-image-crop-picker';
+import Buttoncustam from '../../../Components/Button';
 import HeadComponent from '../../../Components/HeadComponent';
-import {styles} from './styles';
+import TextInputComponent from '../../../Components/TextInputComponent';
+import WrapperContainer from '../../../Components/WrapperContainer';
 import imagePath from '../../../constants/imagePath';
 import en from '../../../constants/lang/en';
-import TextInputComponent from '../../../Components/TextInputComponent';
 import colors from '../../../styles/colors';
 import {
   moderateScale,
   moderateScaleVertical,
 } from '../../../styles/responsiveSize';
-import Buttoncustam from '../../../Components/Button';
-import {ScrollView} from 'react-native-gesture-handler';
-import ImagePicker from 'react-native-image-crop-picker';
+import {styles} from './styles';
 
 export default function AddInfo({navigation, route}) {
+  const [state, setState] = useState({
+    userImage: [],
+  });
+  const {userImage} = state;
+
+  const updateState = data => setState(state => ({...state, ...data}));
+
+  console.log(userImage, 'my image>>>>>>');
   const allData = route?.params?.data;
   console.log(allData, 'mydatalist');
-   const buttonClick = ()=>{
+  const onGallery = () => {
     ImagePicker.openPicker({
-        width: 300,
-        height: 400,
-        cropping: true,
-      }).then(image => {
-        console.log(image, 'my image>>>>>>');
-        updateState({
-          profileImage: image?.sourceURL || image?.path,
-          imageType: image?.mime,
-        });
-      });
-   }
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(reslt => {
+      updateState({userImage: userImage.concat(reslt.path)});
+    });
+  };
+
+  const removeImage = index => {
+    console.log(index, 'myIndex');
+
+    let newArr = [...userImage];
+
+    newArr.splice(index, 1);
+
+    updateState({userImage: newArr});
+  };
+  const createTwoButtonAlert = () =>
+    Alert.alert('Choose', 'Image for uplode', [
+      {
+        text: 'Camera',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Gallery', onPress: onGallery, style: styles?.alertStyle},
+      {text: 'Cancle', onPress: () => console.log('OK Pressed')},
+    ]);
   return (
     <WrapperContainer>
       <HeadComponent
@@ -51,21 +73,42 @@ export default function AddInfo({navigation, route}) {
         leftimagestyle={styles.backButton}
         onPress={() => navigation.goBack()}
       />
-    
+
       <ScrollView>
         <View>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             <View>
-              <Image
-                source={{uri: allData.item.node.image.uri}}
-                style={styles?.imageStyle}
-              />
+              {allData ? (
+                <Image
+                  source={{uri: allData.item.node.image.uri}}
+                  style={styles?.imageStyle}
+                />
+              ) : (
+                <Image
+                  source={imagePath.into_Image}
+                  style={styles?.imageStyle}
+                />
+              )}
             </View>
-            <TouchableOpacity onPress={buttonClick}>
-
-            <View style={styles?.imageStyle}>
-              <Image source={imagePath?.plus} style={{height: 20, width: 20}} />
-            </View>
+            {userImage.map((elem, i) => {
+              return (
+                <View key={i}>
+                  <Image source={{uri: elem}} style={styles?.imageStyle} />
+                  <TouchableOpacity
+                    style={{position: 'absolute', right: 0, top: 2}}
+                    onPress={() => removeImage(i)}>
+                    <Image source={imagePath?.cross} />
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+            <TouchableOpacity onPress={createTwoButtonAlert}>
+              <View style={styles?.imageStyle}>
+                <Image
+                  source={imagePath?.plus}
+                  style={{height: 20, width: 20}}
+                />
+              </View>
             </TouchableOpacity>
           </View>
           <TextInputComponent

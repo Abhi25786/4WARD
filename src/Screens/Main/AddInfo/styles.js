@@ -39,4 +39,7 @@ export const styles = StyleSheet.create({
         marginTop: moderateScaleVertical(10),
         marginHorizontal:moderateScale(24)
       },
+      alertStyle:{
+        color:"red"
+      }
 })

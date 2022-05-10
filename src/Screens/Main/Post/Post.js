@@ -1,8 +1,12 @@
 import CameraRoll from '@react-native-community/cameraroll';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  FlatList, Image, PermissionsAndroid,
-  Platform, TouchableOpacity
+  FlatList,
+  Image,
+  PermissionsAndroid,
+  Platform,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import HeadComponent from '../../../Components/HeadComponent';
@@ -10,11 +14,11 @@ import WrapperContainer from '../../../Components/WrapperContainer';
 import imagePath from '../../../constants/imagePath';
 import navigationStrings from '../../../navigation/navigationStrings';
 import {
+  moderateScale,
   moderateScaleVertical,
-  width
+  width,
 } from '../../../styles/responsiveSize';
-import { styles } from './style';
-
+import {styles} from './style';
 
 function Post({navigation}) {
   const [state, setState] = useState({
@@ -43,6 +47,11 @@ function Post({navigation}) {
     })
       .then(r => {
         setState({photos: r.edges});
+        let value = [];
+        if (state.photos.length == 1) {
+          value = [...state.photos, ...r.edges];
+          setState({photos:r.edges[0]?.node.image.uri})
+        }
         console.log('images ', r);
       })
       .catch(error => {
@@ -60,20 +69,32 @@ function Post({navigation}) {
       height: 400,
       cropping: true,
     }).then(image => {
-
       console.log(image);
-
     });
   };
-  const onImageClick = async (data) => {
-  navigation.navigate(navigationStrings?.ADD_INFO,{data :data})
+  const onImageClick = async data => {
+    navigation.navigate(navigationStrings?.ADD_INFO, {data: data});
   };
+
+  const onPost = async  => {
+    navigation.navigate(navigationStrings?.ADD_INFO,);
+  };
+
   return (
     <WrapperContainer>
       <HeadComponent
         leftTexticon={true}
         lefttitle={'Select photos'}
         lefttextStyle={styles.headerText}
+        rightTexticon={true}
+       righttitle={'Post'}
+       righttextStyle={styles.headerText}
+       rightPress={onPost}
+       
+      />
+      <Image
+        source={state?.photos}
+        style={{height: moderateScale(250), width: width}}
       />
 
       <FlatList
@@ -85,16 +106,16 @@ function Post({navigation}) {
         renderItem={(elem, i) => {
           return (
             <>
-            <TouchableOpacity onPress={()=>onImageClick(elem)}>
-              <Image
-                key={i}
-                style={{
-                  width: width / 3,
-                  height: width / 3,
-                }}
-                source={{uri: elem.item.node.image.uri}}
-              />
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => onImageClick(elem)}>
+                <Image
+                  key={i}
+                  style={{
+                    width: width / 3,
+                    height: width / 3,
+                  }}
+                  source={{uri: elem.item.node.image.uri}}
+                />
+              </TouchableOpacity>
             </>
           );
         }}
