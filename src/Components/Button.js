@@ -1,6 +1,9 @@
 import React from 'react';
 import {Text, Image, TouchableOpacity, StyleSheet, View,} from 'react-native';
 import colors from '../styles/colors';
+import fontFamily from '../styles/fontFamily';
+
+
 import {
   moderateScale,
   moderateScaleVertical,
@@ -49,7 +52,7 @@ const style = StyleSheet.create({
   buttonText: {
     fontSize: textScale(14),
     paddingVertical: moderateScaleVertical(14),
-    fontWeight: 'bold',
+    fontFamily:fontFamily?.CircularStd_Bold,
     color: colors.white,
 
  

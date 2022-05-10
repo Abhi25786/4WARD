@@ -23,18 +23,19 @@ import {
 import {styles} from './styles';
 
 export default function AddInfo({navigation, route}) {
+
+
+  const imageData = route?.params?.imageData;
+  console.log(imageData, 'mydatalist');
   const [state, setState] = useState({
     userImage: [],
+    uplodeImage: imageData,
+  
   });
-  const {userImage} = state;
+  const {userImage, uplodeImage} = state;
 
   const updateState = data => setState(state => ({...state, ...data}));
 
-  console.log(userImage, 'my image>>>>>>');
-  const allData = route?.params?.data;
-  console.log(allData, 'uri image data');
-  const imageData = route?.params?.imageData;
-  console.log(imageData, 'mydatalist');
   const onGallery = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -74,6 +75,10 @@ export default function AddInfo({navigation, route}) {
       {text: 'Gallery', onPress: onGallery},
       {text: 'Cancle', onPress: () => console.log('OK Pressed')},
     ]);
+  const removeUplodeImage = () => {
+    updateState({uplodeImage: null});
+
+  };
   return (
     <WrapperContainer>
       <HeadComponent
@@ -89,13 +94,18 @@ export default function AddInfo({navigation, route}) {
       <ScrollView>
         <View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            <View>
-              {allData ? (
-                <Image source={{uri: allData}} style={styles?.imageStyle} />
-              ) : (
-                <Image source={{uri: imageData}} style={styles?.imageStyle} />
-              )}
-            </View>
+
+            {uplodeImage
+            ?<View>
+
+                <Image source={{uri: uplodeImage}} style={styles?.imageStyle} />
+              <TouchableOpacity
+                style={{position: 'absolute', right: 0, top: 2}}
+                onPress={removeUplodeImage}>
+                <Image source={imagePath?.cross} />
+              </TouchableOpacity>
+            </View>:null
+            }
             {userImage.map((elem, i) => {
               return (
                 <View key={i}>
@@ -118,7 +128,6 @@ export default function AddInfo({navigation, route}) {
             </TouchableOpacity>
           </View>
           <TextInputComponent
-            multiline={true}
             viewstyle={styles?.textInputStyle}
             placeholder={'Write description here..'}
             placeholderTextColor={colors?.introtextColor}

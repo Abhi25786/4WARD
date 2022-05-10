@@ -29,7 +29,7 @@ const TextInputComponent = ({
   inputStyle = '',
   textcolour = '',
   inputViewstyle='',
-  multiline=false,
+
   ...props
 }) => {
   return (
@@ -43,7 +43,7 @@ const TextInputComponent = ({
       <View style={{...styles.inputView,...inputViewstyle}}>
         <TextInput
           {...props}
-multiline={multiline}
+multiline={true}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
           style={{...styles.inputtext, ...inputStyle}}

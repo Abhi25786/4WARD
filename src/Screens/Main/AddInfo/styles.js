@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
         height:moderateScale(100),
         marginHorizontal:moderateScale(24),
         paddingTop:moderateScaleVertical(10)
-      
       },
       imageStyle:{
         height: moderateScale(width/6),

@@ -7,12 +7,15 @@ import {
   Platform,
   TouchableOpacity,
   View,
+  Text,
+  ImageBackground
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import HeadComponent from '../../../Components/HeadComponent';
 import WrapperContainer from '../../../Components/WrapperContainer';
 import imagePath from '../../../constants/imagePath';
 import navigationStrings from '../../../navigation/navigationStrings';
+import colors from '../../../styles/colors';
 import {
   moderateScale,
   moderateScaleVertical,
@@ -64,27 +67,19 @@ function Post({navigation}) {
   }, []);
   console.log(state, '>>>>aaa');
 
-  // const editProfileData =  () => {
-  //   ImagePicker.openCamera({
-  //     width: 300,
-  //     height: 400,
-  //     cropping: true,
-  //   }).then(image => {
-  //     console.log(image.path);
-  //     // navigation.navigate(navigationStrings?.ADD_INFO, {imageData: image.path});
-  //   });
-  // };
-  const onCamera = () => {
-    ImagePicker.openCame({
+  const editProfileData = () => {
+    ImagePicker.openCamera({
       width: 300,
       height: 400,
       cropping: true,
-    }).then(reslt => {
-      console.log(reslt);
+    }).then(image => {
+      console.log(image.path);
+      navigation.navigate(navigationStrings?.ADD_INFO, {imageData: image.path});
     });
   };
+
   const onPost = () => {
-    navigation.navigate(navigationStrings?.ADD_INFO,{data:imageSelect});
+    navigation.navigate(navigationStrings?.ADD_INFO, {imageData: imageSelect});
   };
   const onImageClick = data => {
     console.log(data, 'picdata');
@@ -101,10 +96,26 @@ function Post({navigation}) {
         righttextStyle={styles.headerText}
         rightPress={onPost}
       />
-      <Image
+      <ImageBackground
         source={{uri: imageSelect}}
-        style={{height: moderateScale(300), width: width, resizeMode: 'cover'}}
-      />
+        style={{height: moderateScale(250), width: width, resizeMode: 'cover',justifyContent:"flex-end"}}
+      >
+
+      <View
+        style={{
+          backgroundColor: colors?.introBackground,
+          height: moderateScale(60),
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          flexDirection:"row",
+          justifyContent:"space-between",
+          paddingHorizontal:moderateScale(24),
+          alignItems:"center"
+        }}>
+<Text>Gallery</Text>
+<Text>Recent</Text>
+        </View>
+      </ImageBackground>
 
       <FlatList
         data={photos}
@@ -129,7 +140,7 @@ function Post({navigation}) {
           );
         }}
       />
-      <TouchableOpacity  onPress={onCamera}>
+      <TouchableOpacity onPress={editProfileData}>
         <Image source={imagePath?.camera} style={styles?.cameraButton} />
       </TouchableOpacity>
     </WrapperContainer>
