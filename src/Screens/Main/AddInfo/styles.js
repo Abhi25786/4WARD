@@ -28,6 +28,8 @@ export const styles = StyleSheet.create({
         resizeMode:'cover',
         alignItems:"center",
         justifyContent:"center",
+        marginTop:moderateScaleVertical(10),
+        marginRight:moderateScaleVertical(5),
 
         marginBottom: 24,
       },

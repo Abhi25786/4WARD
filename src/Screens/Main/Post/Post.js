@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
   Text,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import HeadComponent from '../../../Components/HeadComponent';
@@ -28,9 +28,10 @@ function Post({navigation}) {
     currentPageInfo: '',
     photos: '',
     imageSelect: '',
+    uplodeImage:''
   });
 
-  const {currentPageInfo, photos, imageSelect} = state;
+  const {currentPageInfo, photos, imageSelect,uplodeImage} = state;
   const updateState = data => setState(state => ({...state, ...data}));
   /********Check for android permission */
   const hasAndroidPermission = async () => {
@@ -57,6 +58,7 @@ function Post({navigation}) {
         updateState({photos: r.edges});
         console.log('images ', r);
         updateState({imageSelect: r.edges[0].node.image.uri});
+      
       })
       .catch(error => {
         console.log('cameraroll error ', error);
@@ -98,22 +100,25 @@ function Post({navigation}) {
       />
       <ImageBackground
         source={{uri: imageSelect}}
-        style={{height: moderateScale(250), width: width, resizeMode: 'cover',justifyContent:"flex-end"}}
-      >
-
-      <View
         style={{
-          backgroundColor: colors?.introBackground,
-          height: moderateScale(60),
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          flexDirection:"row",
-          justifyContent:"space-between",
-          paddingHorizontal:moderateScale(24),
-          alignItems:"center"
+          height: moderateScale(250),
+          width: width,
+          resizeMode: 'cover',
+          justifyContent: 'flex-end',
         }}>
-<Text>Gallery</Text>
-<Text>Recent</Text>
+        <View
+          style={{
+            backgroundColor: colors?.introBackground,
+            height: moderateScale(60),
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingHorizontal: moderateScale(24),
+            alignItems: 'center',
+          }}>
+          <Text>Gallery</Text>
+          <Text>Recent</Text>
         </View>
       </ImageBackground>
 

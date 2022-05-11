@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {KeyboardAvoidingView, ScrollView, Text, View} from 'react-native';
+import {KeyboardAvoidingView, ScrollView, Text, View,ActivityIndicator} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Buttoncustam from '../../../Components/Button';
 import CountryCodePicker from '../../../Components/CountryPicker';
@@ -32,6 +32,7 @@ function LoginNumber({navigation}) {
     phoneNumber: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false)
   const {password, phoneNumber} = state;
   const updateState = data => setState(state => ({...state, ...data}));
 
@@ -52,10 +53,13 @@ function LoginNumber({navigation}) {
   //----------------------on Submit user login button --------------------------//
 
   const loginUserButton = async () => {
+  
     const checkValid = isValidData();
     if (!checkValid) {
       return;
     }
+
+   
     let apiData = {
       phone: phoneNumber,
       phone_code: countryCode,
@@ -69,6 +73,7 @@ function LoginNumber({navigation}) {
       console.log('Login api res_+++++', res);
 
       showSuccess('User Login successfully....!!!');
+      setIsLoading(!isLoading);
     } catch (error) {
       console.log('error raised', error);
       showError(error?.message);
@@ -87,7 +92,7 @@ function LoginNumber({navigation}) {
         leftimagestyle={styles.backButton}
         onPress={() => navigation.goBack()}
       />
-
+{isLoading && <ActivityIndicator size="small" color={colors?.button} style={{position:"absolute",right:'50%',top:'50%'}}/>}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.maincontainer}>
           <View>

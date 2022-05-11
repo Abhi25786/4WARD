@@ -28,7 +28,7 @@ export default {
   rightArrow: require('../assets/images/ic_direction.png'),
 
   edit: require('../assets/images/ic_edit.png'),
-  cross: require('../assets/images/ic_cross.png'),
+  cross: require('../assets/images/remove.png'),
   camera: require('../assets/images/camera.png'),
  plus : require('../assets/images/ic_plus.png'),
 };

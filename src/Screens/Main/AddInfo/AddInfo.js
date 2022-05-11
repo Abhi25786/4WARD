@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import {error} from 'is_js';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Image,
@@ -6,6 +7,7 @@ import {
   Platform,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -13,29 +15,62 @@ import Buttoncustam from '../../../Components/Button';
 import HeadComponent from '../../../Components/HeadComponent';
 import TextInputComponent from '../../../Components/TextInputComponent';
 import WrapperContainer from '../../../Components/WrapperContainer';
+import {POST_SEND} from '../../../config/urls';
 import imagePath from '../../../constants/imagePath';
 import en from '../../../constants/lang/en';
+import actions from '../../../redux/actions';
 import colors from '../../../styles/colors';
 import {
   moderateScale,
   moderateScaleVertical,
+  width,
 } from '../../../styles/responsiveSize';
+import {apiPost} from '../../../utils/utils';
 import {styles} from './styles';
 
 export default function AddInfo({navigation, route}) {
 
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const imageData = route?.params?.imageData;
+
   console.log(imageData, 'mydatalist');
   const [state, setState] = useState({
-    userImage: [],
-    uplodeImage: imageData,
-  
+    userImage: [imageData],
+    imageType: 'image.jpeg',
+    uplodeImage:''
   });
-  const {userImage, uplodeImage} = state;
-
+  const {userImage, uplodeImage, imageType} = state;
+console.log(uplodeImage,"muresdata");
   const updateState = data => setState(state => ({...state, ...data}));
 
+  //----------------------------useEffect-----------------------------------------//
+  useEffect(() => {
+    const formData = new FormData();
+  
+    // userImage.map((elem,i)=>{
+  formData.append('image',{
+      uri: imageData,
+      name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
+      type: imageType,
+    })
+    // })
+    console.log(formData,"uplodeImage");
+    actions
+    .uplodeImage(formData, {'Content-Type': 'multipart/form-data'})
+    .then(res => {
+console.log(res);
+updateState({uplodeImage: res});
+alert("uplode image")
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }, [])
+  
+  // -------------------------function for use camera gallery-----------------------------------//
   const onGallery = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -43,6 +78,9 @@ export default function AddInfo({navigation, route}) {
       cropping: true,
     }).then(reslt => {
       updateState({userImage: userImage.concat(reslt.path)});
+      updateState({
+        imageType: reslt?.mime,
+      });
     });
   };
   const onCamera = () => {
@@ -52,10 +90,13 @@ export default function AddInfo({navigation, route}) {
       cropping: true,
     }).then(reslt => {
       updateState({userImage: userImage.concat(reslt.path)});
+      updateState({
+        imageType: reslt?.mime,
+      });
       console.log(reslt);
     });
   };
-
+  //------------------------------removeImages for list-----------------------------------------//
   const removeImage = index => {
     console.log(index, 'myIndex');
 
@@ -65,19 +106,46 @@ export default function AddInfo({navigation, route}) {
 
     updateState({userImage: newArr});
   };
-  const createTwoButtonAlert = () =>
-    Alert.alert('Choose', 'Image for uplode', [
-      {
-        text: 'Camera',
-        onPress: onCamera,
-        style: 'cancel',
-      },
-      {text: 'Gallery', onPress: onGallery},
-      {text: 'Cancle', onPress: () => console.log('OK Pressed')},
-    ]);
-  const removeUplodeImage = () => {
-    updateState({uplodeImage: null});
 
+  //--------------------------------camera & gallery button-----------------------------------//
+  const createTwoButtonAlert = () => {
+    if (userImage.length >= 3) {
+      alert('Only for images uplode');
+    } else {
+      Alert.alert('Choose', 'Image for uplode', [
+        {
+          text: 'Camera',
+          onPress: onCamera,
+          style: 'cancel',
+        },
+        {text: 'Gallery', onPress: onGallery},
+        {text: 'Cancle', onPress: () => console.log('OK Pressed')},
+      ]);
+    }
+  };
+
+  const onPostButton = () => {
+    const data = new FormData();
+    data.append('description', 'abhishek');
+    data.append('latitude', '30.7333° N');
+    data.append('longitude', '76.7794° E');
+    data.append('location_name', 'Chandigarh');
+    data.append('type', 1);
+    data.append('images[]', {
+      uri: userImage,
+      name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
+      type: imageType,
+    });
+console.log(data);
+    actions
+      .postSendApi(data, {'Content-Type': 'multipart/form-data'})
+      .then(res => {
+console.log(res);
+setIsLoading(!isLoading);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
   return (
     <WrapperContainer>
@@ -90,30 +158,31 @@ export default function AddInfo({navigation, route}) {
         leftimagestyle={styles.backButton}
         onPress={() => navigation.goBack()}
       />
-
+      {isLoading && (
+        <ActivityIndicator
+          size="small"
+          color={colors?.button}
+          style={{position: 'absolute', right: '50%', top: '50%'}}
+        />
+      )}
       <ScrollView>
         <View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-
-            {uplodeImage
-            ?<View>
-
-                <Image source={{uri: uplodeImage}} style={styles?.imageStyle} />
-              <TouchableOpacity
-                style={{position: 'absolute', right: 0, top: 2}}
-                onPress={removeUplodeImage}>
-                <Image source={imagePath?.cross} />
-              </TouchableOpacity>
-            </View>:null
-            }
             {userImage.map((elem, i) => {
               return (
                 <View key={i}>
                   <Image source={{uri: elem}} style={styles?.imageStyle} />
                   <TouchableOpacity
-                    style={{position: 'absolute', right: 0, top: 2}}
+                    style={{position: 'absolute', right: 0, top: 1}}
                     onPress={() => removeImage(i)}>
-                    <Image source={imagePath?.cross} />
+                    <Image
+                      source={imagePath?.cross}
+                      style={{
+                        height: width / 19,
+                        width: width / 19,
+                        resizeMode: 'contain',
+                      }}
+                    />
                   </TouchableOpacity>
                 </View>
               );
@@ -152,7 +221,7 @@ export default function AddInfo({navigation, route}) {
           <Buttoncustam
             title={en.NEXT}
             stylbtn={styles.button}
-            onpress={null}
+            onpress={onPostButton}
           />
         </View>
       </KeyboardAvoidingView>

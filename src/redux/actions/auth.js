@@ -1,5 +1,5 @@
 import { set } from 'lodash';
-import { EDIT_PROFILE, FORGET_PASSWORD, LOGIN, SIGNUP } from '../../config/urls';
+import { EDIT_PROFILE, FORGET_PASSWORD, LOGIN, POST_SEND, SIGNUP, UPLODE_IMAGE } from '../../config/urls';
 import { apiPost, setItem, setUserData } from '../../utils/utils';
 import store from '../store';
 import types from '../types';
@@ -60,6 +60,37 @@ export const editProfile = (data, header = {}) => {
         // resolve(res);
       })
       .catch((error) => {
+        reject(error);
+      });
+  });
+};
+export const postSendApi = (data, header = {}) => {
+  console.log(data, "the given data");
+  return new Promise((resolve, reject) => {
+    apiPost(POST_SEND, data, header)
+      .then((res) => {
+       
+      
+            resolve(res);
+            console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
+export const uplodeImage = (data, header = {}) => {
+  console.log(data, "the given data");
+  return new Promise((resolve, reject) => {
+    apiPost(UPLODE_IMAGE, data, header)
+      .then((res) => {
+      
+            resolve(res);
+            console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
         reject(error);
       });
   });
