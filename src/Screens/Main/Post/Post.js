@@ -28,10 +28,11 @@ function Post({navigation}) {
     currentPageInfo: '',
     photos: '',
     imageSelect: '',
-    uplodeImage:''
+    uplodeImage:'',
+    filename: '',
   });
 
-  const {currentPageInfo, photos, imageSelect,uplodeImage} = state;
+  const {currentPageInfo, photos, imageSelect,uplodeImage,filename} = state;
   const updateState = data => setState(state => ({...state, ...data}));
   /********Check for android permission */
   const hasAndroidPermission = async () => {
@@ -81,8 +82,14 @@ function Post({navigation}) {
   };
 
   const onPost = () => {
-    navigation.navigate(navigationStrings?.ADD_INFO, {imageData: imageSelect});
+    navigation.navigate(navigationStrings?.ADD_INFO, {
+      imageData: {
+        uri: imageSelect,
+        name: `${(Math.random() + 1).toString(36).substring(7)}.${(filename.substring(filename.indexOf('.') + 1).toLowerCase())}`,
+        type: `image/${(filename.substring(filename.indexOf('.') + 1).toLowerCase())}`,
+      },});
   };
+  
   const onImageClick = data => {
     console.log(data, 'picdata');
     updateState({imageSelect: data.item.node.image.uri});

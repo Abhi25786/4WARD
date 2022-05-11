@@ -37,38 +37,39 @@ export default function AddInfo({navigation, route}) {
 
   console.log(imageData, 'mydatalist');
   const [state, setState] = useState({
-    userImage: [imageData],
-    imageType: 'image.jpeg',
-    uplodeImage:''
+    userImage: [],
+    imageType: 'null',
+    uplodeImage:'',
+    uploadUrl:''
   });
-  const {userImage, uplodeImage, imageType} = state;
+  const {userImage, uplodeImage, imageType,uploadUrl} = state;
 console.log(uplodeImage,"muresdata");
   const updateState = data => setState(state => ({...state, ...data}));
 
   //----------------------------useEffect-----------------------------------------//
   useEffect(() => {
-    const formData = new FormData();
-  
-    // userImage.map((elem,i)=>{
-  formData.append('image',{
-      uri: imageData,
-      name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
-      type: imageType,
-    })
-    // })
-    console.log(formData,"uplodeImage");
-    actions
-    .uplodeImage(formData, {'Content-Type': 'multipart/form-data'})
-    .then(res => {
-console.log(res);
-updateState({uplodeImage: res});
-alert("uplode image")
-
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    if (imageData) {
+      imageUplode(imageData);
+    }
   }, [])
+
+  const imageUplode =(data)=>{
+    console.log(data, 'data>>>');
+    const form = new FormData();
+    form.append('image', data);
+    actions
+      .uplodeImage(form, {'Content-Type': 'multipart/form-data'})
+      .then(res => {
+        console.log(res.data, 'imageUpload>>res');
+updateState({uploadUrl:res?.data})
+        updateState({
+          userImage: [...userImage, res?.data],
+        });
+      })
+      .catch(err => {
+        alert(err?.message);
+      });
+  }
   
   // -------------------------function for use camera gallery-----------------------------------//
   const onGallery = () => {
@@ -77,10 +78,12 @@ alert("uplode image")
       height: 400,
       cropping: true,
     }).then(reslt => {
-      updateState({userImage: userImage.concat(reslt.path)});
-      updateState({
-        imageType: reslt?.mime,
-      });
+      // updateState({userImage: userImage.concat(reslt.path)});
+     let imageData= {
+        uri: reslt?.path,
+        name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
+      }
+      imageUplode(imageData)
     });
   };
   const onCamera = () => {
@@ -132,7 +135,7 @@ alert("uplode image")
     data.append('location_name', 'Chandigarh');
     data.append('type', 1);
     data.append('images[]', {
-      uri: userImage,
+      uri: uploadUrl,
       name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
       type: imageType,
     });
