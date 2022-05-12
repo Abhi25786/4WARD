@@ -23,16 +23,16 @@ export default function PostDetail({route, navigation}) {
       {/*----------------------------- this is user post image & info  --------------------------------- */}
 
       <ImageBackground
-        source={allData?.uri}
-        style={{height: height, width: width}}>
+        source={allData?.images.file}
+        style={{height: height, width: width,}}>
         <View style={{flexDirection: 'column', flex: 0.9}}>
           <View style={styles?.headContainer}>
             <View style={{flex: 0.2, alignItems: 'center'}}>
-              <Image source={allData?.uri} style={styles.userProfile} />
+              <Image source={{uri : allData?.user.profile}} style={styles.userProfile} />
             </View>
             <View style={{flex: 0.6, justifyContent: 'center'}}>
-              <TextComponent name={allData?.name} />
-              <TextComponent name="Chandigarh" styling={styles.textStyle} />
+              <TextComponent name={allData?.user.first_name} />
+              <TextComponent name={allData.location_name} styling={styles.textStyle} />
             </View>
             <View style={styles?.crossStyle}>
               {/*----------------------------- this is back button  --------------------------------- */}

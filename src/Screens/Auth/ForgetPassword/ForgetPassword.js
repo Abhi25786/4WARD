@@ -40,7 +40,7 @@ export default function LoginWithOtp({navigation}) {
     .then(res => {
       console.log(res, 'res');
     
-      navigation.navigate(navigationStrings.OTP, {data: res?.data});
+      navigation.navigate(navigationStrings.OTP, {forgetdata: res?.data,number:apiData});
     })
     .catch(err => {
       console(err?.message);

@@ -48,6 +48,7 @@ export default function EditProfile({navigation}) {
         firstName: userData?.first_name,
         lastName: userData?.last_name,
         email: userData?.email,
+        profileImage:userData?.profile
         
       });
     }
@@ -60,10 +61,9 @@ export default function EditProfile({navigation}) {
       cropping: true,
     }).then(image => {
       console.log(image, 'my image>>>>>>');
-      updateState({
-        profileImage: image?.sourceURL || image?.path,
-        imageType: image?.mime,
-      });
+     imageUpload(image.path)
+    }).catch(err=>{
+console.log(err);
     });
   };
     //-------------------------  validation section ------------------------//
@@ -81,15 +81,16 @@ export default function EditProfile({navigation}) {
     if (!checkValid) {
       return;
     }
-   
-    let apiData = { 
-      first_name:firstName,
-      last_name:lastName,
-      email:email
-    }
-
+let apiData= new FormData();
+apiData.append('first_name',firstName)
+apiData.append('last_name',lastName)
+apiData.append('email',email)
+apiData.append('image',{uri:profileImage,
+imageType:imageType,
+name:`${(Math.random() + 1).toString(36).substring(7)}.jpg`})
+let header = { "Content-Type": "multipart/form-data" }
     actions
-      .editProfile(apiData)
+      .editProfile(apiData,header)
       .then(res => {
         console.log('editProfile api res_+++++', res);
         alert(res?.message);
@@ -100,7 +101,29 @@ export default function EditProfile({navigation}) {
         alert(err?.message);
       });
   };
-
+  //-------------------------------image uplode api---------------------------------//
+  const imageUpload = image => {
+    // setIsLoading(!isLoading);
+    let apiData = new FormData();
+    apiData.append('image', {
+      uri: image,
+      name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
+      type: 'image/jpeg',
+    });
+    let header = {'Content-Type': 'multipart/form-data'};
+    actions
+      .uplodeImage(apiData, header)
+      .then(res => {
+        console.log('single image api res_+++++', res);
+       updateState({profileImage:res.data})
+        // setIsLoading(isLoading);
+        alert("success full")
+      })
+      .catch(error => {
+        console.log(error, 'err');
+        alert(error?.message);
+      });
+  };
   return (
     <WrapperContainer>
       <HeadComponent

@@ -20,6 +20,7 @@ export default function CardCmponent({
   postImage = '',
   userName = '',
   PostDetail='',
+  location=''
 }) {
   return (
     <View style={styles.viewContainer}>
@@ -34,7 +35,7 @@ export default function CardCmponent({
         </View>
         <View style={{flex: 0.6, justifyContent: 'center'}}>
           <TextComponent name={userName} />
-          <TextComponent name="Chandigarh" styling={styles.textStyle} />
+          <TextComponent name={location} styling={styles.textStyle} />
         </View>
         <View
           style={{
@@ -48,7 +49,7 @@ export default function CardCmponent({
       <TouchableOpacity activeOpacity={0.9} onPress={PostDetail}>
 
       <View>
-        <Image source={userProfile} style={styles.postStyle} />
+        <Image source={postImage} style={styles.postStyle} />
       </View>
       </TouchableOpacity>
       <View

@@ -18,6 +18,7 @@ import WrapperContainer from '../../../Components/WrapperContainer';
 import {POST_SEND} from '../../../config/urls';
 import imagePath from '../../../constants/imagePath';
 import en from '../../../constants/lang/en';
+import navigationStrings from '../../../navigation/navigationStrings';
 import actions from '../../../redux/actions';
 import colors from '../../../styles/colors';
 import {
@@ -29,48 +30,25 @@ import {apiPost} from '../../../utils/utils';
 import {styles} from './styles';
 
 export default function AddInfo({navigation, route}) {
-
-
   const [isLoading, setIsLoading] = useState(false);
 
   const imageData = route?.params?.imageData;
-
+  console.log(imageData, 'imageData>>>');
   console.log(imageData, 'mydatalist');
   const [state, setState] = useState({
-    userImage: [],
+    userImage: [imageData],
     imageType: 'null',
-    uplodeImage:'',
-    uploadUrl:''
+    uplodeImage: '',
+    uploadUrl: '',
+locationInput:'',
+descriptionInput:''
   });
-  const {userImage, uplodeImage, imageType,uploadUrl} = state;
-console.log(uplodeImage,"muresdata");
+  const {userImage, uplodeImage, imageType, uploadUrl,locationInput,descriptionInput} = state;
+  console.log(uplodeImage, 'muresdata');
   const updateState = data => setState(state => ({...state, ...data}));
 
-  //----------------------------useEffect-----------------------------------------//
-  useEffect(() => {
-    if (imageData) {
-      imageUplode(imageData);
-    }
-  }, [])
 
-  const imageUplode =(data)=>{
-    console.log(data, 'data>>>');
-    const form = new FormData();
-    form.append('image', data);
-    actions
-      .uplodeImage(form, {'Content-Type': 'multipart/form-data'})
-      .then(res => {
-        console.log(res.data, 'imageUpload>>res');
-updateState({uploadUrl:res?.data})
-        updateState({
-          userImage: [...userImage, res?.data],
-        });
-      })
-      .catch(err => {
-        alert(err?.message);
-      });
-  }
-  
+ 
   // -------------------------function for use camera gallery-----------------------------------//
   const onGallery = () => {
     ImagePicker.openPicker({
@@ -78,14 +56,14 @@ updateState({uploadUrl:res?.data})
       height: 400,
       cropping: true,
     }).then(reslt => {
-      // updateState({userImage: userImage.concat(reslt.path)});
-     let imageData= {
-        uri: reslt?.path,
-        name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
-      }
-      imageUplode(imageData)
-    });
+ 
+      let imageData = reslt?.path
+      imageUpload(imageData);
+    }).catch(error=>{
+      alert(error)
+    })
   };
+
   const onCamera = () => {
     ImagePicker.openCamera({
       width: 300,
@@ -98,6 +76,29 @@ updateState({uploadUrl:res?.data})
       });
       console.log(reslt);
     });
+  };
+  //-------------------------------image uplode api---------------------------------//
+  const imageUpload = image => {
+    setIsLoading(!isLoading);
+    let apiData = new FormData();
+    apiData.append('image', {
+      uri: image,
+      name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
+      type: 'image/jpeg',
+    });
+    let header = {'Content-Type': 'multipart/form-data'};
+    actions
+      .uplodeImage(apiData, header)
+      .then(res => {
+        console.log('single image api res_+++++', res);
+        updateState({userImage: userImage.concat(res.data)});
+        setIsLoading(isLoading);
+        alert("success full")
+      })
+      .catch(error => {
+        console.log(error, 'err');
+        alert(error?.message);
+      });
   };
   //------------------------------removeImages for list-----------------------------------------//
   const removeImage = index => {
@@ -126,28 +127,30 @@ updateState({uploadUrl:res?.data})
       ]);
     }
   };
-
+//-------------------------------------Post data api -------------------------------------------//
   const onPostButton = () => {
+    console.log(uploadUrl, 'upload url');
+    setIsLoading(!isLoading);
     const data = new FormData();
-    data.append('description', 'abhishek');
+    data.append('description', descriptionInput);
     data.append('latitude', '30.7333° N');
     data.append('longitude', '76.7794° E');
-    data.append('location_name', 'Chandigarh');
+    data.append('location_name', locationInput);
     data.append('type', 1);
-    data.append('images[]', {
-      uri: uploadUrl,
-      name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
-      type: imageType,
-    });
-console.log(data);
+    {userImage.map((elem,i)=>{
+data.append('images[]',elem)
+    })}
+   
+    console.log(data);
     actions
       .postSendApi(data, {'Content-Type': 'multipart/form-data'})
       .then(res => {
-console.log(res);
-setIsLoading(!isLoading);
+        console.log(res, 'res from api');
+        setIsLoading(isLoading);
+        navigation.navigate(navigationStrings?.HOME)
       })
       .catch(error => {
-        console.log(error);
+        console.log(error, 'error from api');
       });
   };
   return (
@@ -203,7 +206,7 @@ setIsLoading(!isLoading);
             viewstyle={styles?.textInputStyle}
             placeholder={'Write description here..'}
             placeholderTextColor={colors?.introtextColor}
-            onchangetext={null}
+            onchangetext={event => updateState({descriptionInput: event})}
             value={null}
           />
           <TextInputComponent
@@ -211,10 +214,11 @@ setIsLoading(!isLoading);
               marginHorizontal: moderateScale(24),
               marginTop: moderateScaleVertical(16),
             }}
+            onchangetext={event => updateState({locationInput: event})}
             placeholder={'Add location'}
             placeholderTextColor={colors?.introtextColor}
-            onchangetext={null}
-            value={null}
+           
+            value={locationInput}
           />
         </View>
       </ScrollView>

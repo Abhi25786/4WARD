@@ -1,4 +1,5 @@
 import CameraRoll from '@react-native-community/cameraroll';
+import { error } from 'is_js';
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
@@ -9,12 +10,14 @@ import {
   View,
   Text,
   ImageBackground,
+  ActivityIndicator
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import HeadComponent from '../../../Components/HeadComponent';
 import WrapperContainer from '../../../Components/WrapperContainer';
 import imagePath from '../../../constants/imagePath';
 import navigationStrings from '../../../navigation/navigationStrings';
+import actions from '../../../redux/actions';
 import colors from '../../../styles/colors';
 import {
   moderateScale,
@@ -31,7 +34,7 @@ function Post({navigation}) {
     uplodeImage:'',
     filename: '',
   });
-
+const [isLoading,setIsLoading]=useState(false)
   const {currentPageInfo, photos, imageSelect,uplodeImage,filename} = state;
   const updateState = data => setState(state => ({...state, ...data}));
   /********Check for android permission */
@@ -82,12 +85,23 @@ function Post({navigation}) {
   };
 
   const onPost = () => {
-    navigation.navigate(navigationStrings?.ADD_INFO, {
-      imageData: {
+    setIsLoading(!isLoading);
+        let apiData = new FormData()
+    apiData.append('image', {
         uri: imageSelect,
-        name: `${(Math.random() + 1).toString(36).substring(7)}.${(filename.substring(filename.indexOf('.') + 1).toLowerCase())}`,
-        type: `image/${(filename.substring(filename.indexOf('.') + 1).toLowerCase())}`,
-      },});
+        name: `${(Math.random() + 1).toString(36).substring(7)}.jpg`,
+        type: 'image/jpeg',
+
+    })
+    let header = { "Content-Type": "multipart/form-data" }
+    actions.uplodeImage(apiData, header).then(res =>{
+      console.log("single image api res_+++++", res)
+      setIsLoading(isLoading);
+      navigation.navigate(navigationStrings?.ADD_INFO,{imageData:res.data})
+    }).catch(error =>{
+      console.log(err, 'err');
+                  alert(err?.message);
+    })
   };
   
   const onImageClick = data => {
@@ -105,6 +119,13 @@ function Post({navigation}) {
         righttextStyle={styles.headerText}
         rightPress={onPost}
       />
+       {isLoading && (
+        <ActivityIndicator
+          size="small"
+          color={colors?.button}
+          style={{position: 'absolute', right: '50%', top: '50%'}}
+        />
+      )}
       <ImageBackground
         source={{uri: imageSelect}}
         style={{
