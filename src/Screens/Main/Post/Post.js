@@ -109,7 +109,7 @@ const [isLoading,setIsLoading]=useState(false)
     updateState({imageSelect: data.item.node.image.uri});
   };
   return (
-    <WrapperContainer>
+    <WrapperContainer isLoading={isLoading} withModal={isLoading}>
       <HeadComponent
         leftTexticon={true}
         lefttitle={'Select photos'}
@@ -119,13 +119,7 @@ const [isLoading,setIsLoading]=useState(false)
         righttextStyle={styles.headerText}
         rightPress={onPost}
       />
-       {isLoading && (
-        <ActivityIndicator
-          size="small"
-          color={colors?.button}
-          style={{position: 'absolute', right: '50%', top: '50%'}}
-        />
-      )}
+       
       <ImageBackground
         source={{uri: imageSelect}}
         style={{

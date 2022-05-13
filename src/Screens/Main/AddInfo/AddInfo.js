@@ -154,7 +154,7 @@ data.append('images[]',elem)
       });
   };
   return (
-    <WrapperContainer>
+    <WrapperContainer isLoading={isLoading} withModal={isLoading}>
       <HeadComponent
         leftImage={true}
         leftimageIcon={imagePath.leftArrow}
@@ -164,13 +164,7 @@ data.append('images[]',elem)
         leftimagestyle={styles.backButton}
         onPress={() => navigation.goBack()}
       />
-      {isLoading && (
-        <ActivityIndicator
-          size="small"
-          color={colors?.button}
-          style={{position: 'absolute', right: '50%', top: '50%'}}
-        />
-      )}
+      
       <ScrollView>
         <View>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
@@ -204,6 +198,7 @@ data.append('images[]',elem)
           </View>
           <TextInputComponent
             viewstyle={styles?.textInputStyle}
+            multiline={true}
             placeholder={'Write description here..'}
             placeholderTextColor={colors?.introtextColor}
             onchangetext={event => updateState({descriptionInput: event})}

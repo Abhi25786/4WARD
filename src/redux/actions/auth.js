@@ -1,6 +1,6 @@
 import { set } from 'lodash';
-import { EDIT_PROFILE, FORGET_PASSWORD, LOGIN, POST_SEND, SIGNUP, UPLODE_IMAGE } from '../../config/urls';
-import { apiPost, setItem, setUserData } from '../../utils/utils';
+import { EDIT_PROFILE, FORGET_PASSWORD, LOGIN, POSTS, POST_SEND, SIGNUP, UPLODE_IMAGE } from '../../config/urls';
+import { apiGet, apiPost, setItem, setUserData } from '../../utils/utils';
 import store from '../store';
 import types from '../types';
 const { dispatch } = store;
@@ -98,4 +98,11 @@ export const uplodeImage = (data, header = {}) => {
 export const forgotPassword =(data)=>{
   console.log(data,"apid");
   return apiPost(FORGET_PASSWORD,data)
+  }
+
+  export const getUplodePost =(query='')=>{
+    return apiGet(POSTS+query)
+  }
+  export const postLikes =(query='')=>{
+    return apiGet(POSTS+query)
   }

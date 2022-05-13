@@ -85,14 +85,14 @@ function LoginNumber({navigation}) {
     navigation.navigate(navigationStrings?.FORGET_PASSWORD)
   }
   return (
-    <WrapperContainer>
+    <WrapperContainer isLoading={isLoading} withModal={isLoading}>
       <HeadComponent
         leftImage={true}
         leftimageIcon={imagePath.leftArrow}
         leftimagestyle={styles.backButton}
         onPress={() => navigation.goBack()}
       />
-{isLoading && <ActivityIndicator size="small" color={colors?.button} style={{position:"absolute",right:'50%',top:'50%'}}/>}
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.maincontainer}>
           <View>

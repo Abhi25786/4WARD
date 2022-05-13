@@ -8,11 +8,13 @@ import {
   textScale,
   width,
 } from '../styles/responsiveSize';
+
 import colors from '../styles/colors';
 import TextComponent from './TextComponent';
 import imagePath from '../constants/imagePath';
 import en from '../constants/lang/en';
 import PostDetail from '../Screens/Main/PostDetail/PostDetail';
+import { ParallaxImage } from 'react-native-snap-carousel';
 
 export default function CardCmponent({
   userProfile = '',
@@ -20,8 +22,12 @@ export default function CardCmponent({
   postImage = '',
   userName = '',
   PostDetail='',
-  location=''
+  location='',
+  likePress='',
+  
+  data={}
 }) {
+  console.log(data,"data");
   return (
     <View style={styles.viewContainer}>
       <View
@@ -31,11 +37,16 @@ export default function CardCmponent({
           paddingTop: moderateScale(10),
         }}>
         <View style={{flex: 0.2, alignItems: 'center'}}>
-          <Image source={userProfile} style={styles.userProfile} />
+          <Image source={{uri:data.item.user.profile}} style={styles.userProfile} />
         </View>
         <View style={{flex: 0.6, justifyContent: 'center'}}>
-          <TextComponent name={userName} />
-          <TextComponent name={location} styling={styles.textStyle} />
+          <View style={{flexDirection:"row"}}>
+
+          <TextComponent name={data.item.user.first_name} />
+
+          <TextComponent name={data.item.user.last_name} />
+          </View>
+          <TextComponent name={data.item.location_name} styling={styles.textStyle} />
         </View>
         <View
           style={{
@@ -48,9 +59,11 @@ export default function CardCmponent({
       </View>
       <TouchableOpacity activeOpacity={0.9} onPress={PostDetail}>
 
-      <View>
-        <Image source={postImage} style={styles.postStyle} />
-      </View>
+       <View>
+        <Image source={data.item.images.file} style={styles.postStyle} />
+      </View> 
+
+  <ParallaxImage />
       </TouchableOpacity>
       <View
         style={{
@@ -58,7 +71,7 @@ export default function CardCmponent({
           marginHorizontal: moderateScale(10),
         }}>
         <TextComponent name="Enter Comments" />
-        <TextComponent name="Enter time" styling={styles.textStyle} />
+        <TextComponent name={data.item.time_ago} styling={styles.textStyle} />
       </View>
       <View
         style={{
@@ -71,9 +84,14 @@ export default function CardCmponent({
         <View style={{alignItems: 'center'}}>
           <TextComponent name={en.COMMENTS} />
         </View>
+        
         <View style={{justifyContent: 'center'}}>
-          <TextComponent name={en.LIKES} />
+         
+          <TextComponent name={en.LIKES} onPress={likePress} />
+         
+            
         </View>
+        
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Image source={imagePath.rightArrow} style={styles.dotsMenu} />
         </View>

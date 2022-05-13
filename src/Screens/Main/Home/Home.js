@@ -1,35 +1,48 @@
-import { error } from 'is_js';
-import React, { useEffect, useState } from 'react';
+import {array} from 'is_js';
+import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
 import CardComponent from '../../../Components/CardComponent';
 import HeadComponent from '../../../Components/HeadComponent';
 import WrapperContainer from '../../../Components/WrapperContainer';
-import { POSTS } from '../../../config/urls';
-import DATA from '../../../constants/data/postData';
 import imagePath from '../../../constants/imagePath';
 import navigationStrings from '../../../navigation/navigationStrings';
+import actions from '../../../redux/actions';
 import {moderateScale} from '../../../styles/responsiveSize';
-import { apiGet } from '../../../utils/utils';
 import {style} from './style';
+
 export default function Home({navigation}) {
+  const [userData, setUserData] = useState([]);
+  const [skipState, setSkipState] = useState(0);
+  console.log(userData);
+  const [isLoading, setLoding] = useState(false);
+  const [refresh,setRefresh]=useState(false)
+  const postDetailClick = data => {
+    console.log(data?.item, 'mydata123');
+    navigation.navigate(navigationStrings?.POST_DETAIL, {data: data?.item});
+  };
 
-  const [userData,setUserData]=useState([])
+  useEffect(() => {
+    setLoding(!isLoading);
+    let data = `?skip=${skipState}`;
+    actions.getUplodePost(data).then(res => {
+      console.log(res?.data, 'post upload');
 
-  const postDetailClick = (data) =>{
-    console.log(data?.item,"mydata123")
-    navigation.navigate(navigationStrings?.POST_DETAIL,{data : data?.item,})
-  }
+      setUserData(res.data);
+      setLoding(isLoading);
+    });
+  }, [skipState]);
 
-  useEffect(()=>{
-apiGet(POSTS).then(res =>{
-console.log(res?.data);
-setUserData(res?.data)
-}).catch(error =>{
-console.log(error);
-})
-  },[])
+
+  const onRefresh = () => {
+    setRefresh(true);
+    fetchData();
+  };
+  const fetchData = () => {
+   setSkipState(skipState - 1)
+    setRefresh(false);
+  };
   return (
-    <WrapperContainer>
+    <WrapperContainer isLoading={isLoading} withModal={isLoading}>
       <HeadComponent
         leftImage={true}
         leftimageIcon={imagePath.homeLogo}
@@ -40,21 +53,22 @@ console.log(error);
 
       <FlatList
         showsVerticalScrollIndicator={false}
-        scrol
         data={userData}
+        onEndReached={({distanceFromEnd}) => {
+          setSkipState(skipState + 1);
+        }}
         contentContainerStyle={{
           paddingBottom: moderateScale(70),
         }}
+        refreshing={refresh}
+        onRefresh={onRefresh}
         renderItem={(element, index) => {
-          console.log(element.item.uri,'element');
+          console.log(element.item.uri, 'element');
           return (
             <CardComponent
-              menuButton={imagePath.menuDots}
-              userProfile={{uri : element.item.user.profile}}
-              userName={element.item.user.first_name}
-              postImage={element.item.images.file}
-              location={element.item.location_name}
-              PostDetail={()=>postDetailClick(element)}
+              data={element}
+              // likePress={onPressLike}
+              PostDetail={() => postDetailClick(element)}
             />
           );
         }}
