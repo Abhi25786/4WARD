@@ -1,20 +1,18 @@
-import {StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
 import React from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import imagePath from '../constants/imagePath';
+import en from '../constants/lang/en';
+import colors from '../styles/colors';
 import {
-  height,
   moderateScale,
   moderateScaleVertical,
   textScale,
-  width,
+  width
 } from '../styles/responsiveSize';
-
-import colors from '../styles/colors';
 import TextComponent from './TextComponent';
-import imagePath from '../constants/imagePath';
-import en from '../constants/lang/en';
-import PostDetail from '../Screens/Main/PostDetail/PostDetail';
-import { ParallaxImage } from 'react-native-snap-carousel';
+
+
 
 export default function CardCmponent({
   userProfile = '',
@@ -27,7 +25,7 @@ export default function CardCmponent({
   
   data={}
 }) {
-  console.log(data,"data");
+  // console.log(data,"data");
   return (
     <View style={styles.viewContainer}>
       <View
@@ -37,16 +35,16 @@ export default function CardCmponent({
           paddingTop: moderateScale(10),
         }}>
         <View style={{flex: 0.2, alignItems: 'center'}}>
-          <Image source={{uri:data.item.user.profile}} style={styles.userProfile} />
+          <Image source={{uri:data.user.profile}} style={styles.userProfile} />
         </View>
         <View style={{flex: 0.6, justifyContent: 'center'}}>
           <View style={{flexDirection:"row"}}>
 
-          <TextComponent name={data.item.user.first_name} />
+          <TextComponent name={data.user.first_name} />
 
-          <TextComponent name={data.item.user.last_name} />
+          <TextComponent name={data.user.last_name} />
           </View>
-          <TextComponent name={data.item.location_name} styling={styles.textStyle} />
+          <TextComponent name={data.location_name} styling={styles.textStyle} />
         </View>
         <View
           style={{
@@ -60,18 +58,18 @@ export default function CardCmponent({
       <TouchableOpacity activeOpacity={0.9} onPress={PostDetail}>
 
        <View>
-        <Image source={data.item.images.file} style={styles.postStyle} />
+        <Image source={{uri:data.images.file[0]}} style={styles.postStyle} />
       </View> 
 
-  <ParallaxImage />
+
       </TouchableOpacity>
       <View
         style={{
           paddingBottom: moderateScale(10),
           marginHorizontal: moderateScale(10),
         }}>
-        <TextComponent name="Enter Comments" />
-        <TextComponent name={data.item.time_ago} styling={styles.textStyle} />
+        <TextComponent name={data.description} />
+        <TextComponent name={data.time_ago} styling={styles.textStyle} />
       </View>
       <View
         style={{

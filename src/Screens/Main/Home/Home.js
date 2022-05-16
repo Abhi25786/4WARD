@@ -13,7 +13,7 @@ import {style} from './style';
 export default function Home({navigation}) {
   const [userData, setUserData] = useState([]);
   const [skipState, setSkipState] = useState(0);
-  console.log(userData);
+
   const [isLoading, setLoding] = useState(false);
   const [refresh,setRefresh]=useState(false)
   const postDetailClick = data => {
@@ -27,7 +27,8 @@ export default function Home({navigation}) {
     actions.getUplodePost(data).then(res => {
       console.log(res?.data, 'post upload');
 
-      setUserData(res.data);
+      setUserData(userData.concat(res.data));
+     
       setLoding(isLoading);
     });
   }, [skipState]);
@@ -41,6 +42,9 @@ export default function Home({navigation}) {
    setSkipState(skipState - 1)
     setRefresh(false);
   };
+  // const refreshAllPage = () =>{
+  // setSkipState(0)
+  // }
   return (
     <WrapperContainer isLoading={isLoading} withModal={isLoading}>
       <HeadComponent
@@ -49,24 +53,26 @@ export default function Home({navigation}) {
         rightImage={true}
         rightimageIcon={imagePath.location}
         rightimagestyle={style.smallIcons}
+        // leftPress={refreshAllPage}
       />
 
       <FlatList
         showsVerticalScrollIndicator={false}
         data={userData}
         onEndReached={({distanceFromEnd}) => {
-          setSkipState(skipState + 1);
+          setSkipState(skipState + 8);
         }}
+        onEndReachedThreshold={0.1}
         contentContainerStyle={{
           paddingBottom: moderateScale(70),
         }}
         refreshing={refresh}
         onRefresh={onRefresh}
         renderItem={(element, index) => {
-          console.log(element.item.uri, 'element');
+          // console.log(element, 'element');
           return (
             <CardComponent
-              data={element}
+              data={element.item}
               // likePress={onPressLike}
               PostDetail={() => postDetailClick(element)}
             />

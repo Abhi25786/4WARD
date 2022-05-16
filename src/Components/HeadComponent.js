@@ -31,7 +31,7 @@ function HeadComponent({
 }) {
   return (
     <View style={styles.viewcss}>
-      <TouchableOpacity activeOpacity={1} {...props} style={{flex: 0.5, flexDirection: 'row'}}>
+      <TouchableOpacity activeOpacity={0.9} {...props} style={{flex: 0.5, flexDirection: 'row'}}>
          <View style={{ flexDirection: 'row'}}>
         {leftImage && (
          

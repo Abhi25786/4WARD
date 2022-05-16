@@ -19,11 +19,11 @@ export default function PostDetail({route, navigation}) {
   const allData = route?.params?.data;
   console.log(allData, 'z');
   return (
-    <WrapperContainer>
+    // <WrapperContainer>
+<>
       {/*----------------------------- this is user post image & info  --------------------------------- */}
-
       <ImageBackground
-        source={allData?.images.file}
+        source={{uri:allData?.images.file[0]}}
         style={{height: height, width: width,}}>
         <View style={{flexDirection: 'column', flex: 0.9}}>
           <View style={styles?.headContainer}>
@@ -50,6 +50,7 @@ export default function PostDetail({route, navigation}) {
           onpress={null}
         />
       </ImageBackground>
-    </WrapperContainer>
+      </>
+    // </WrapperContainer>
   );
 }

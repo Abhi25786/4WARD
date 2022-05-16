@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
       ,headContainer:{
         flexDirection: 'row',
         flexWrap: 'wrap',
-        paddingTop: moderateScale(10),
+        paddingTop: moderateScale(20),
       },
       crossStyle:{
         flex: 0.2,
