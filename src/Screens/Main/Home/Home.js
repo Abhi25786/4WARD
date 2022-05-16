@@ -12,39 +12,49 @@ import {style} from './style';
 
 export default function Home({navigation}) {
   const [userData, setUserData] = useState([]);
+  console.log(userData,"mydataImageas");
   const [skipState, setSkipState] = useState(0);
-
-  const [isLoading, setLoding] = useState(false);
-  const [refresh,setRefresh]=useState(false)
+  const [isLoading, setLoding] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const postDetailClick = data => {
-    console.log(data?.item, 'mydata123');
+    // console.log(data?.item, 'mydata123');
     navigation.navigate(navigationStrings?.POST_DETAIL, {data: data?.item});
   };
 
   useEffect(() => {
-    setLoding(!isLoading);
-    let data = `?skip=${skipState}`;
-    actions.getUplodePost(data).then(res => {
-      console.log(res?.data, 'post upload');
-
-      setUserData(userData.concat(res.data));
-     
-      setLoding(isLoading);
-    });
-  }, [skipState]);
-
+    if (isLoading) {
+      setLoding(true);
+      let data = `?skip=${skipState}`;
+      actions.getUplodePost(data).then(res => {
+        console.log(res?.data, 'post upload');
+        
+        setLoding(false);
+        setUserData([...userData,...res?.data]);
+      });
+    }
+  }, [isLoading]);
 
   const onRefresh = () => {
     setRefresh(true);
     fetchData();
   };
   const fetchData = () => {
-   setSkipState(skipState - 1)
+    setSkipState(skipState - 1);
     setRefresh(false);
   };
-  // const refreshAllPage = () =>{
-  // setSkipState(0)
-  // }
+  const onLikeButton = data => {
+    // console.log(data,"data<<<<<");
+
+    let like = `?post_id=${data.item.id}&status=${data.item.like_status}`;
+    actions
+      .postLikes(like)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
   return (
     <WrapperContainer isLoading={isLoading} withModal={isLoading}>
       <HeadComponent
@@ -61,6 +71,7 @@ export default function Home({navigation}) {
         data={userData}
         onEndReached={({distanceFromEnd}) => {
           setSkipState(skipState + 8);
+          setLoding(true);
         }}
         onEndReachedThreshold={0.1}
         contentContainerStyle={{
@@ -73,7 +84,8 @@ export default function Home({navigation}) {
           return (
             <CardComponent
               data={element.item}
-              // likePress={onPressLike}
+              key={element.item.id}
+              likePress={() => onLikeButton(element)}
               PostDetail={() => postDetailClick(element)}
             />
           );

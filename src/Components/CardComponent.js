@@ -1,5 +1,6 @@
+import { isArray, isEmpty } from 'lodash';
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View ,Text} from 'react-native';
 
 import imagePath from '../constants/imagePath';
 import en from '../constants/lang/en';
@@ -12,7 +13,7 @@ import {
 } from '../styles/responsiveSize';
 import TextComponent from './TextComponent';
 
-
+import { Carousel } from 'react-native-snap-carousel';
 
 export default function CardCmponent({
   userProfile = '',
@@ -56,12 +57,28 @@ export default function CardCmponent({
         </View>
       </View>
       <TouchableOpacity activeOpacity={0.9} onPress={PostDetail}>
-
-       <View>
+       {/* <View>
         <Image source={{uri:data.images.file[0]}} style={styles.postStyle} />
-      </View> 
+      </View>   */}
 
-
+{data?.images?.file &&
+        isArray(data?.images?.file) &&
+        data?.images?.file.length
+          ? data?.images?.file.map((i, inx) => {
+              if (i != '' && i != null && i != isEmpty({}) ) {
+                return (
+                  <Image
+                    source={{uri: i}}
+                    style={styles.postStyle}
+                    resizeMode={'contain'}
+                  />
+                );
+              } else {
+                return null;
+              }
+            })
+          : null}
+        
       </TouchableOpacity>
       <View
         style={{
@@ -83,9 +100,10 @@ export default function CardCmponent({
           <TextComponent name={en.COMMENTS} />
         </View>
         
-        <View style={{justifyContent: 'center'}}>
+        <View style={{justifyContent: 'center',flexDirection:"row"}}>
          
           <TextComponent name={en.LIKES} onPress={likePress} />
+          <Text style={styles?.likeText}>{data.like_count}</Text>
          
             
         </View>
@@ -123,11 +141,16 @@ const styles = StyleSheet.create({
     height: moderateScale(width - 40),
     marginVertical: moderateScaleVertical(16),
     alignSelf: 'center',
+    resizeMode:'contain'
     
   },
   dotsMenu: {
     height: moderateScale(width / 20),
     width: moderateScale(width / 20),
     resizeMode: 'contain',
+  },
+  likeText: {
+    fontSize: textScale(13),
+    color: colors?.white,
   },
 });

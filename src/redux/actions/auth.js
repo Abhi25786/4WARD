@@ -1,5 +1,5 @@
 import { set } from 'lodash';
-import { EDIT_PROFILE, FORGET_PASSWORD, LOGIN, POSTS, POST_SEND, SIGNUP, UPLODE_IMAGE } from '../../config/urls';
+import { EDIT_PROFILE, FORGET_PASSWORD, LIKE, LOGIN, POSTS, POST_SEND, SIGNUP, UPLODE_IMAGE } from '../../config/urls';
 import { apiGet, apiPost, setItem, setUserData } from '../../utils/utils';
 import store from '../store';
 import types from '../types';
@@ -104,5 +104,5 @@ export const forgotPassword =(data)=>{
     return apiGet(POSTS+query)
   }
   export const postLikes =(query='')=>{
-    return apiGet(POSTS+query)
+    return apiPost(LIKE+query)
   }

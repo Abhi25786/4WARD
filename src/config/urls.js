@@ -13,6 +13,7 @@ export const FORGET_PASSWORD = getApiUrl('/forgot_password');
 export const POST_SEND = getApiUrl('/post_send');
 export const UPLODE_IMAGE = getApiUrl('/img_upload');
 export const POSTS = getApiUrl('/posts');
+export const LIKE = getApiUrl('/like-post');
 
 
 
