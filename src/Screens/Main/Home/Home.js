@@ -16,9 +16,9 @@ export default function Home({navigation}) {
   const [skipState, setSkipState] = useState(0);
   const [isLoading, setLoding] = useState(true);
   const [refresh, setRefresh] = useState(false);
-  const postDetailClick = data => {
-    // console.log(data?.item, 'mydata123');
-    navigation.navigate(navigationStrings?.POST_DETAIL, {data: data?.item});
+  const postDetailClick = (data,image) => {
+    // console.log(image, 'mydata123');
+    navigation.navigate(navigationStrings?.POST_DETAIL, {data: data?.item,image:image});
   };
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function Home({navigation}) {
     fetchData();
   };
   const fetchData = () => {
-    setSkipState(skipState - 1);
+    setSkipState(0);
     setRefresh(false);
   };
   const onLikeButton = data => {
@@ -79,6 +79,7 @@ export default function Home({navigation}) {
         }}
         refreshing={refresh}
         onRefresh={onRefresh}
+
         renderItem={(element, index) => {
           // console.log(element, 'element');
           return (
@@ -86,7 +87,7 @@ export default function Home({navigation}) {
               data={element.item}
               key={element.item.id}
               likePress={() => onLikeButton(element)}
-              PostDetail={() => postDetailClick(element)}
+              PostDetail={(image) => postDetailClick(element,image)}
             />
           );
         }}

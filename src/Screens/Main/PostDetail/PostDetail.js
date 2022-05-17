@@ -17,13 +17,17 @@ import en from '../../../constants/lang/en';
 
 export default function PostDetail({route, navigation}) {
   const allData = route?.params?.data;
-  console.log(allData, 'z');
+  const imageData = route?.params?.image;
+  console.log(imageData, 'mydata123');
+
+
   return (
     // <WrapperContainer>
 <>
       {/*----------------------------- this is user post image & info  --------------------------------- */}
       <ImageBackground
-        source={{uri:allData?.images.file[0]}}
+        source={{uri:imageData}}
+    
         style={{height: height, width: width,}}>
         <View style={{flexDirection: 'column', flex: 0.9}}>
           <View style={styles?.headContainer}>
