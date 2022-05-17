@@ -12,49 +12,64 @@ import {style} from './style';
 
 export default function Home({navigation}) {
   const [userData, setUserData] = useState([]);
-  console.log(userData,"mydataImageas");
+  
   const [skipState, setSkipState] = useState(0);
-  const [isLoading, setLoding] = useState(true);
+  const [likeCount, setLikeCount] = useState(null);
+    console.log(likeCount,"likeData");
+  const [isLoading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const postDetailClick = (data,image) => {
     // console.log(image, 'mydata123');
     navigation.navigate(navigationStrings?.POST_DETAIL, {data: data?.item,image:image});
   };
 
+
+
+  // if(userData?.){
+
+  // }
+//---------------------------------Page Refresh UseEffect -----------------------------------------/
   useEffect(() => {
-    if (isLoading) {
-      setLoding(true);
+    if (isLoading || refresh) {
       let data = `?skip=${skipState}`;
       actions.getUplodePost(data).then(res => {
         console.log(res?.data, 'post upload');
         
-        setLoding(false);
-        setUserData([...userData,...res?.data]);
+        setLoading(false);
+        setRefresh(false);
+        if(refresh){
+          setUserData(res?.data)
+        }else{
+          setUserData([...userData, ...res?.data]);
+
+        }
+        
       });
     }
-  }, [isLoading]);
-
+  }, [isLoading,refresh]);
+//---------------------------------Page Refresh function -----------------------------------------/
   const onRefresh = () => {
-    setRefresh(true);
-    fetchData();
-  };
-  const fetchData = () => {
     setSkipState(0);
-    setRefresh(false);
+    setRefresh(true);
+    // fetchData();
   };
+//---------------------------------Like Button Api -----------------------------------------//
   const onLikeButton = data => {
-    // console.log(data,"data<<<<<");
+setLikeCount(data.item.like_status)
 
-    let like = `?post_id=${data.item.id}&status=${data.item.like_status}`;
+
+    let like = `?post_id=${data.item.id}&status=${likeCount}`;
     actions
       .postLikes(like)
       .then(res => {
         console.log(res);
+       
       })
       .catch(err => {
         console.log(err);
       });
   };
+
   return (
     <WrapperContainer isLoading={isLoading} withModal={isLoading}>
       <HeadComponent
@@ -63,7 +78,7 @@ export default function Home({navigation}) {
         rightImage={true}
         rightimageIcon={imagePath.location}
         rightimagestyle={style.smallIcons}
-        // leftPress={refreshAllPage}
+        onPress={onRefresh}
       />
 
       <FlatList
@@ -71,7 +86,7 @@ export default function Home({navigation}) {
         data={userData}
         onEndReached={({distanceFromEnd}) => {
           setSkipState(skipState + 8);
-          setLoding(true);
+          setLoading(true);
         }}
         onEndReachedThreshold={0.1}
         contentContainerStyle={{
@@ -81,7 +96,7 @@ export default function Home({navigation}) {
         onRefresh={onRefresh}
 
         renderItem={(element, index) => {
-          // console.log(element, 'element');
+          
           return (
             <CardComponent
               data={element.item}
