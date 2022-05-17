@@ -1,4 +1,5 @@
 import {array} from 'is_js';
+import { cloneDeep } from 'lodash';
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
 import CardComponent from '../../../Components/CardComponent';
@@ -55,15 +56,31 @@ export default function Home({navigation}) {
   };
 //---------------------------------Like Button Api -----------------------------------------//
   const onLikeButton = data => {
-setLikeCount(data.item.like_status)
-
-
-    let like = `?post_id=${data.item.id}&status=${likeCount}`;
+    let id = data.item.id;
+  
+    console.log('previous status', data.item.like_status);
+    let updateLikeStatus = Number(data.item.like_status) ? 0 : 1;
+    console.log('like status', updateLikeStatus);
+    let like = `?post_id=${data.item.id}&status=${updateLikeStatus}`;
     actions
       .postLikes(like)
       .then(res => {
         console.log(res);
-       
+        let newArray = cloneDeep(userData);
+        newArray = newArray.map((i, inx) => {
+          if (i?.id == id) {
+            i.like_count = updateLikeStatus
+              ? Number(i.like_count) + 1
+              : Number(i.like_count) - 1;
+            i.like_status = updateLikeStatus;
+            console.log(i, 'after update');
+            return i;
+          } else {
+            return i;
+          }
+        });
+        console.log(newArray, 'newArray');
+        setUserData(newArray);
       })
       .catch(err => {
         console.log(err);
@@ -84,6 +101,7 @@ setLikeCount(data.item.like_status)
       <FlatList
         showsVerticalScrollIndicator={false}
         data={userData}
+        extraData={userData}
         onEndReached={({distanceFromEnd}) => {
           setSkipState(skipState + 8);
           setLoading(true);
