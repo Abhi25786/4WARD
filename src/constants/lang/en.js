@@ -50,6 +50,7 @@ export default {
     SECTOR:'Sector',
     VIEW_MAP:'View Map',
     SUBMIT:'Submit',
-    ADD_INFO:"Add Info"
-  
+    ADD_INFO:"Add Info",
+    ENTER_COMMENT:'Enter Comment',
+  SEND:"Send"
   };

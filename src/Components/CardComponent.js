@@ -1,5 +1,5 @@
 import {isArray, isEmpty, isObject} from 'lodash';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 
 import imagePath from '../constants/imagePath';
@@ -12,9 +12,16 @@ import {
   width,
 } from '../styles/responsiveSize';
 import TextComponent from './TextComponent';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 import Carousel from 'react-native-snap-carousel';
-import { Pagination } from 'react-native-snap-carousel';
+import {Pagination} from 'react-native-snap-carousel';
+import {Divider} from 'react-native-elements/dist/divider/Divider';
 
 export default function CardCmponent({
   userProfile = '',
@@ -24,10 +31,10 @@ export default function CardCmponent({
   PostDetail = '',
   location = '',
   likePress = '',
-
+  commentPress='',
   data = {},
 }) {
-  const [snapState,setSnapState]=useState(0)
+  const [snapState, setSnapState] = useState(0);
   return (
     <View style={styles.viewContainer}>
       <View
@@ -47,70 +54,63 @@ export default function CardCmponent({
           </View>
           <TextComponent name={data.location_name} styling={styles.textStyle} />
         </View>
-        <View
-          style={{
-            flex: 0.2,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Image source={imagePath.menuDots} style={styles.dotsMenu} />
-        </View>
-      </View>
-      {/* <TouchableOpacity activeOpacity={0.9} onPress={PostDetail}> */}
-      {/* <View>
-        <Image source={{uri:data.images.file[0]}} style={styles.postStyle} />
-      </View>   */}
 
-      {/* {data?.images?.file &&
-        isArray(data?.images?.file) && 
-        data?.images?.file.length
-          ? data?.images?.file.map((i, inx) => {
-              if (i != '' && i != null  && typeof i !== 'object') {
-                return (
-                  <Image
-                    source={{uri: i}}
-                    style={styles.postStyle}
-                    resizeMode={'contain'}
-                  />
-                );
-              } else {
-                return null;
-              }
-            })
-          : null} */}
-      {/* </TouchableOpacity> */}
+        <Menu
+          style={{flex: 0.2, justifyContent: 'center', alignItems: 'center'}}>
+          <MenuTrigger>
+            <Image source={imagePath.menuDots} style={styles.dotsMenu} />
+          </MenuTrigger>
+          <MenuOptions
+            optionsContainerStyle={{
+              backgroundColor: colors?.whiteSmokeColor,
+              width: moderateScale(width / 4),
+              alignItems: 'center',
+              marginTop: moderateScale(25),
+              borderRadius: moderateScale(5),
+            }}>
+            <MenuOption onSelect={() => alert(`Save`)}>
+              <Text style={{color: 'black'}}>Save</Text>
+            </MenuOption>
+
+            <MenuOption onSelect={() => alert(`Hide`)}>
+              <Text style={{color: 'black'}}>Hide</Text>
+            </MenuOption>
+          </MenuOptions>
+        </Menu>
+      </View>
+    
 
       <View>
         {data?.images?.file &&
         isArray(data?.images?.file) &&
         data?.images?.file.length ? (
-          <Carousel data={data?.images?.file} 
-          sliderWidth={moderateScale(width - 48)}
-          itemWidth={moderateScale(width - 50)}
-          scrollEnabled={true}
-          onSnapToItem={index => setSnapState(index)}
+          <Carousel
+            data={data?.images?.file}
+            sliderWidth={moderateScale(width - 48)}
+            itemWidth={moderateScale(width - 50)}
+            scrollEnabled={true}
+            onSnapToItem={index => setSnapState(index)}
             //  scrollEnabled={data?.image?.file?.length>0?true:false}
-        
-          renderItem={i=>{
-    
-            if (i.item != '' && i.item != null  && typeof i.item !== 'object') {
-              return (
-                <TouchableOpacity onPress={()=>PostDetail(i.item)}>
-                <Image
-                  source={{uri: i.item}}
-                  style={styles.postStyle}
-           
-                />
-                </TouchableOpacity>
-              );
-            } else {
-              return null;
-            }
-          }}
+
+            renderItem={i => {
+              if (
+                i.item != '' &&
+                i.item != null &&
+                typeof i.item !== 'object'
+              ) {
+                return (
+                  <TouchableOpacity onPress={() => PostDetail(i.item)}>
+                    <Image source={{uri: i.item}} style={styles.postStyle} />
+                  </TouchableOpacity>
+                );
+              } else {
+                return null;
+              }
+            }}
           />
         ) : null}
-         {/*---------------------------------Pagination dots-----------------------------------*/}
-          <Pagination
+        {/*---------------------------------Pagination dots-----------------------------------*/}
+        <Pagination
           dotsLength={
             !!(
               data?.images?.file &&
@@ -147,8 +147,10 @@ export default function CardCmponent({
           paddingBottom: moderateScale(10),
           marginHorizontal: moderateScale(10),
         }}>
-        <View style={{alignItems: 'center'}}>
-          <TextComponent name={en.COMMENTS} />
+          
+        <View style={{alignItems: 'center', flexDirection: 'row'}}>
+          <TextComponent name={en.COMMENTS} onPress={commentPress}/>
+          <Text style={styles?.likeText}>{data.comment_count}</Text>
         </View>
 
         <View style={{justifyContent: 'center', flexDirection: 'row'}}>

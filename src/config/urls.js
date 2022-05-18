@@ -14,6 +14,8 @@ export const POST_SEND = getApiUrl('/post_send');
 export const UPLODE_IMAGE = getApiUrl('/img_upload');
 export const POSTS = getApiUrl('/posts');
 export const LIKE = getApiUrl('/like-post');
+export const COMMENT = getApiUrl('/comment-post');
+export const GET_COMMENT = getApiUrl('/comment-get');
 
 
 

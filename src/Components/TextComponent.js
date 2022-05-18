@@ -5,7 +5,7 @@ import {moderateScale, textScale} from '../styles/responsiveSize';
 
 function TextComponent({name = '', styling = '',  ...props}) {
   return (
-    <TouchableOpacity activeOpacity={1}  {...props}>
+    <TouchableOpacity  {...props}>
       <Text style={{...style.textStyle, ...styling}}> {name} </Text>
     </TouchableOpacity>
   );

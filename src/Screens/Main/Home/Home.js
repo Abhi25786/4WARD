@@ -1,7 +1,9 @@
 import {array} from 'is_js';
 import { cloneDeep } from 'lodash';
 import React, {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
+import {FlatList,View,Text} from 'react-native';
+import ActionSheet, { SheetManager } from 'react-native-actions-sheet';
+import BottomSheetComponent from '../../../Components/BottomSheetComponent';
 import CardComponent from '../../../Components/CardComponent';
 import HeadComponent from '../../../Components/HeadComponent';
 import WrapperContainer from '../../../Components/WrapperContainer';
@@ -9,16 +11,17 @@ import imagePath from '../../../constants/imagePath';
 import navigationStrings from '../../../navigation/navigationStrings';
 import actions from '../../../redux/actions';
 import {moderateScale} from '../../../styles/responsiveSize';
+
 import {style} from './style';
 
 export default function Home({navigation}) {
   const [userData, setUserData] = useState([]);
   
   const [skipState, setSkipState] = useState(0);
-  const [likeCount, setLikeCount] = useState(null);
-    console.log(likeCount,"likeData");
+   
   const [isLoading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
+  const [comment,setComment]=useState('')
   const postDetailClick = (data,image) => {
     // console.log(image, 'mydata123');
     navigation.navigate(navigationStrings?.POST_DETAIL, {data: data?.item,image:image});
@@ -87,7 +90,11 @@ export default function Home({navigation}) {
       });
   };
 
+  const onCommentButton =(element)=>{
+SheetManager.show('myId',{value:element})
+  }
   return (
+    <>
     <WrapperContainer isLoading={isLoading} withModal={isLoading}>
       <HeadComponent
         leftImage={true}
@@ -120,11 +127,16 @@ export default function Home({navigation}) {
               data={element.item}
               key={element.item.id}
               likePress={() => onLikeButton(element)}
+              commentPress={()=>onCommentButton(element)}
               PostDetail={(image) => postDetailClick(element,image)}
             />
           );
         }}
       />
+
+<BottomSheetComponent  />
     </WrapperContainer>
+
+    </>
   );
 }
