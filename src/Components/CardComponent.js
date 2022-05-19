@@ -99,7 +99,7 @@ export default function CardCmponent({
                 typeof i.item !== 'object'
               ) {
                 return (
-                  <TouchableOpacity onPress={() => PostDetail(i.item)}>
+                  <TouchableOpacity activeOpacity={1} onPress={() => PostDetail(i.item)}>
                     <Image source={{uri: i.item}} style={styles.postStyle} />
                   </TouchableOpacity>
                 );
